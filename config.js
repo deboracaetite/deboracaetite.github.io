@@ -23,8 +23,17 @@ window.CONFIG = {
   // Instagram sem o @
   instagram: "deboracaetite.nails",
 
-  // Fotos da página inicial (pasta img/)
-  fotos: ["img/foto1.jpg", "img/foto2.jpg", "img/foto3.jpg", "img/foto4.jpg"],
+  // Portfólio: fotos da pasta img/ com uma legenda curta.
+  // Para adicionar: suba a foto na pasta img/ e copie uma linha.
+  fotos: [
+    { src: "img/port-flores.jpg", legenda: "Rosa perolado com florzinhas" },
+    { src: "img/port-francesinha-vinho.jpg", legenda: "Francesinha vinho" },
+    { src: "img/port-milky.jpg", legenda: "Milky nude" },
+    { src: "img/port-rosa-flores.jpg", legenda: "Rosa com flor de destaque" },
+    { src: "img/port-perolado.jpg", legenda: "Perolado com brilho" },
+    { src: "img/foto1.jpg", legenda: "Francesinha dourada" },
+    { src: "img/foto2.jpg", legenda: "Francesinha vermelha texturizada" }
+  ],
 
   // Promoção em destaque. Some sozinha depois da data "ate".
   // Para tirar antes, troque por: promo: null,

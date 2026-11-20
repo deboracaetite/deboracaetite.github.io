@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
-<script src="config.js?v=20261120c"></script>
+<script src="config.js?v=20261120d"></script>
 <style>
 /* Layout: coluna única tipo celular, no visual dos panfletos da Débora (creme, dourado, vinho na promoção). Tema único claro. */
 :root {
@@ -187,6 +187,26 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 .ok-panel { display: grid; gap: 8px; padding: 18px; border-radius: var(--r); background: var(--ok-soft); border: 1.5px solid var(--ok); text-align: center; }
 .ok-panel b { font-family: var(--font-display); color: var(--ok); font-size: 1.1rem; }
 
+.portfolio {
+  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 4px 2px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.portfolio::-webkit-scrollbar { display: none; }
+.pf { flex: 0 0 72%; max-width: 300px; scroll-snap-align: center; margin: 0; padding: 0; border: 0; background: none; cursor: zoom-in; text-align: left; display: grid; gap: 8px; }
+.pf img {
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; max-width: 100%;
+  border-radius: 140px 140px 20px 20px; border: 2px solid var(--gold-hi);
+  box-shadow: 0 14px 26px -16px rgba(58, 42, 31, .55);
+}
+.pf span { font-family: var(--font-script); font-size: 1.5rem; color: var(--gold-lo); text-align: center; line-height: 1; }
+.swipe { text-align: center; font-size: 0.72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: -6px; }
+.lb { position: fixed; inset: 0; z-index: 30; background: rgba(28, 18, 12, .92); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); }
+.lb figure { margin: 0; display: grid; gap: 10px; justify-items: center; max-width: 520px; width: 100%; }
+.lb img { width: 100%; max-height: 78vh; object-fit: contain; border-radius: 16px; }
+.lb figcaption { font-family: var(--font-script); color: var(--gold-hi); font-size: 1.8rem; }
+.lb .x { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold-hi); background: transparent; color: var(--on-dark); font-size: 1.4rem; cursor: pointer; }
+.lb .nav { display: flex; gap: 10px; }
+
 /* Agendamento */
 .top { display: grid; gap: 4px; justify-items: center; text-align: center; }
 .top .mini-logo { width: 150px; height: auto; }
@@ -280,7 +300,11 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
     </div>
   </header>
 
-  <section class="gallery" id="i-fotos" aria-label="Trabalhos da Débora"></section>
+  <section class="step" id="i-port" aria-labelledby="i-p">
+    <div class="rule"><h2 id="i-p">PORTFÓLIO</h2></div>
+    <div class="portfolio" id="i-fotos"></div>
+    <p class="swipe">Deslize para ver mais ›</p>
+  </section>
 
   <section class="promo" id="i-promo" hidden></section>
 
@@ -420,6 +444,12 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
   <a class="btn" href="#agendar">Agendar horário</a>
   <a class="btn ghost" id="dock-wa" href="#" target="_blank" rel="noopener" aria-label="Chamar no WhatsApp"></a>
 </nav>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Foto do portfólio">
+  <button class="x" id="lb-x" aria-label="Fechar">×</button>
+  <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption>
+    <div class="nav"><button class="btn ghost sm" id="lb-prev">‹ Anterior</button><button class="btn ghost sm" id="lb-next">Próxima ›</button></div>
+  </figure>
+</div>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
@@ -460,6 +490,16 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
     if (d.length === 10) return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
     return s;
   }
+  var FOTOS = (C.fotos || []).map(function (f) { return typeof f === "string" ? { src: f, legenda: "" } : f; });
+  var fotoAtual = 0;
+  function abrirFoto(i) {
+    fotoAtual = (i + FOTOS.length) % FOTOS.length;
+    var f = FOTOS[fotoAtual];
+    $("lb-img").src = f.src; $("lb-img").alt = f.legenda || ""; $("lb-cap").textContent = f.legenda || "";
+    $("lb").hidden = false; $("lb-x").focus();
+  }
+  function fecharFoto() { $("lb").hidden = true; }
+
   function promoAtiva() { return C.promo && (!C.promo.ate || iso(new Date()) <= C.promo.ate); }
 
   var toastT;
@@ -505,8 +545,14 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
     if (C.whatsapp) { wa.href = waLink(C.whatsapp, "Olá, " + PRIMEIRO_NOME + "! Vim pelo site."); wa.hidden = false; } else wa.hidden = true;
 
     var g = $("i-fotos"); g.textContent = "";
-    (C.fotos || []).forEach(function (src) { var im = el("img"); im.src = src; im.alt = "Unhas feitas pela " + PRIMEIRO_NOME; im.loading = "lazy"; g.appendChild(im); });
-    g.hidden = !(C.fotos && C.fotos.length);
+    FOTOS.forEach(function (f, i) {
+      var b = el("button", "pf"); b.type = "button";
+      var im = el("img"); im.src = f.src; im.alt = f.legenda || "Unhas feitas pela " + PRIMEIRO_NOME; im.loading = i < 2 ? "eager" : "lazy";
+      b.appendChild(im); if (f.legenda) b.appendChild(el("span", null, f.legenda));
+      b.onclick = function () { abrirFoto(i); };
+      g.appendChild(b);
+    });
+    $("i-port").hidden = !FOTOS.length;
 
     var p = $("i-promo"); p.textContent = "";
     var promoServ = C.servicos.filter(function (s) { return s.promo && s.preco != null; });
@@ -824,6 +870,22 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
     window.scrollTo(0, 0);
   }
 
+  $("lb-x").onclick = fecharFoto;
+  $("lb-prev").onclick = function () { abrirFoto(fotoAtual - 1); };
+  $("lb-next").onclick = function () { abrirFoto(fotoAtual + 1); };
+  $("lb").addEventListener("click", function (e) { if (e.target === this) fecharFoto(); });
+  document.addEventListener("keydown", function (e) {
+    if ($("lb").hidden) return;
+    if (e.key === "Escape") fecharFoto();
+    if (e.key === "ArrowRight") abrirFoto(fotoAtual + 1);
+    if (e.key === "ArrowLeft") abrirFoto(fotoAtual - 1);
+  });
+  var tx = null;
+  $("lb").addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; }, { passive: true });
+  $("lb").addEventListener("touchend", function (e) {
+    if (tx == null) return; var dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) abrirFoto(fotoAtual + (dx < 0 ? 1 : -1));
+  });
   var dock = $("dock");
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (es) { dock.classList.toggle("on", !es[0].isIntersecting && !$("inicio").hidden); }).observe($("i-cta"));
