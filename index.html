@@ -29,7 +29,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
 <script src="config.js?v=20261120c"></script>
 <style>
 /* Layout: coluna única tipo celular, no visual dos panfletos da Débora (creme, dourado, vinho na promoção). Tema único claro. */
@@ -104,7 +104,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* Início */
 .hero { display: grid; gap: 6px; justify-items: center; text-align: center; }
-.logo { width: min(260px, 66vw); height: auto; display: block; }
+.logo { width: min(210px, 56vw); display: block; }
+.mono svg { display: block; width: 100%; height: auto; overflow: visible; }
 .hero h1 { font-family: var(--font-display); font-size: clamp(2rem, 9vw, 2.9rem); letter-spacing: 0.03em; font-weight: 600; }
 .hero .prof { font-family: var(--font-display); letter-spacing: 0.35em; font-size: 0.95rem; color: var(--ink); white-space: nowrap; padding-left: .35em; }
 .hero .script { font-size: clamp(2rem, 8.5vw, 2.6rem); margin-top: 10px; }
@@ -190,7 +191,7 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 
 /* Agendamento */
 .top { display: grid; gap: 4px; justify-items: center; text-align: center; }
-.top .mini-logo { width: 130px; height: auto; }
+.top .mini-logo { width: 104px; }
 .top h1 { font-family: var(--font-display); font-size: 1.6rem; }
 .step { display: grid; gap: 12px; }
 .step-head { display: flex; align-items: center; gap: 10px; }
@@ -266,7 +267,7 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 <!-- ======================= INÍCIO ======================= -->
 <main class="wrap" id="inicio">
   <header class="hero">
-    <img src="img/logo.png" alt="" class="logo" width="480" height="270">
+    <div class="logo mono" aria-hidden="true"></div>
     <h1 class="gold-text" id="i-nome">Débora Caetité</h1>
     <div class="rule"><span class="prof" id="i-prof">NAIL DESIGNER</span></div>
     <p class="script" id="i-frase"></p>
@@ -317,7 +318,7 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 <main class="wrap" id="cliente" hidden>
   <a class="back" href="#">‹ Voltar</a>
   <header class="top">
-    <img src="img/logo.png" alt="" class="mini-logo" width="480" height="270">
+    <div class="mini-logo mono" aria-hidden="true"></div>
     <h1 class="gold-text" id="c-nome">Débora Caetité</h1>
     <p class="label">Agende seu horário</p>
   </header>
@@ -358,7 +359,7 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 <!-- ======================= AGENDA (profissional) ======================= -->
 <main class="wrap" id="agenda" hidden>
   <header class="top">
-    <img src="img/logo.png" alt="" class="mini-logo" width="480" height="270">
+    <div class="mini-logo mono" aria-hidden="true"></div>
     <p class="label">Minha agenda</p>
     <h1 class="gold-text" id="a-nome">Débora Caetité</h1>
     <div class="tabs">
@@ -441,6 +442,22 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
   var SVG_PIN = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg>';
 
   function $(id) { return document.getElementById(id); }
+
+  /* Monograma DC vetorial: nítido em qualquer tamanho */
+  var MONO = '<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+    '<stop offset="0" stop-color="#7A5418"/><stop offset=".35" stop-color="#C99A4B"/>' +
+    '<stop offset=".5" stop-color="#F3DCA6"/><stop offset=".68" stop-color="#B98A3A"/><stop offset="1" stop-color="#6E4A14"/>' +
+    '</linearGradient></defs>' +
+    '<g fill="url(#g)">' +
+    '<text x="34" y="128" font-family="Cormorant Garamond, Cinzel, serif" font-size="150" font-weight="500">D</text>' +
+    '<text x="104" y="128" font-family="Cormorant Garamond, Cinzel, serif" font-size="150" font-weight="500" font-style="italic">C</text>' +
+    '<path d="M203 22 Q205 37 220 40 Q205 43 203 58 Q201 43 186 40 Q201 37 203 22 Z"/>' +
+    '<path d="M219 64 Q220 70 226 71 Q220 72 219 78 Q218 72 212 71 Q218 70 219 64 Z" opacity=".75"/>' +
+    '</g>' +
+    '<path d="M14 120 C 60 88, 110 150, 160 112 S 222 84, 232 98" fill="none" stroke="url(#g)" stroke-width="2.4" stroke-linecap="round"/>' +
+    '</svg>';
+  Array.prototype.forEach.call(document.querySelectorAll(".mono"), function (e, i) { e.innerHTML = MONO.replace(/id="g"/, 'id="g' + i + '"').replace(/url\(#g\)/g, "url(#g" + i + ")"); });
   function pad(n) { return String(n).padStart(2, "0"); }
   function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
   function fromIso(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
