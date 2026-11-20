@@ -26,13 +26,12 @@ window.CONFIG = {
   // Portfólio: fotos da pasta img/ com uma legenda curta.
   // Para adicionar: suba a foto na pasta img/ e copie uma linha.
   fotos: [
-    { src: "img/port-flores.jpg", legenda: "Rosa perolado com florzinhas" },
-    { src: "img/port-francesinha-vinho.jpg", legenda: "Francesinha vinho" },
-    { src: "img/port-milky.jpg", legenda: "Milky nude" },
-    { src: "img/port-rosa-flores.jpg", legenda: "Rosa com flor de destaque" },
-    { src: "img/port-perolado.jpg", legenda: "Perolado com brilho" },
-    { src: "img/foto1.jpg", legenda: "Francesinha dourada" },
-    { src: "img/foto2.jpg", legenda: "Francesinha vermelha texturizada" }
+    { src: "img/port-francesinha-dourada.jpg", legenda: "Francesinha com filete dourado" },
+    { src: "img/port-terracota.jpg", legenda: "Terracota" },
+    { src: "img/port-francesinha-branca.jpg", legenda: "Francesinha clássica" },
+    { src: "img/port-dourado-flocos.jpg", legenda: "Dourado com flocos de ouro" },
+    { src: "img/port-amarelo.jpg", legenda: "Amarelo manteiga" },
+    { src: "img/port-perolado.jpg", legenda: "Perolado com brilho" }
   ],
 
   // Promoção em destaque. Some sozinha depois da data "ate".
