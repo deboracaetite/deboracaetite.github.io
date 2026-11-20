@@ -25,7 +25,7 @@ window.CONFIG = {
 
   // Seção "Sobre" na página inicial
   sobre: {
-    foto: "img/debora-perfil.jpg",
+    foto: "img/debora-perfil2.jpg",
     titulo: "Prazer, sou a Débora",
     texto: [
       "Sou nail designer em Ribeirão Pires e acredito que cuidar das unhas é cuidar de si. Por isso, cada atendimento é um momento só seu: sem pressa, com atenção a cada detalhe.",
