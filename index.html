@@ -183,6 +183,22 @@ button, input, select, textarea { font: inherit; color: inherit; }
   background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px;
   font-size: 0.9rem; z-index: 20; max-width: calc(100% - 32px);
 }
+/* Início */
+.hero { display: grid; gap: 12px; justify-items: center; text-align: center; padding-top: 12px; }
+.hero h1 { font-size: 2.3rem; }
+.logo { width: 72px; height: 72px; border-radius: 20px; }
+.cta { display: grid; gap: 10px; width: 100%; margin-top: 8px; }
+.btn.big { padding: 17px 20px; font-size: 1.05rem; }
+.contact { display: grid; gap: 4px; justify-items: center; font-size: 0.95rem; }
+.contact .tel { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--ink); text-decoration: none; font-variant-numeric: tabular-nums; }
+.contact a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.pricelist { display: grid; border-radius: var(--r); background: var(--surface); border: 1.5px solid var(--line); }
+.pricelist .li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
+.pricelist .li:first-child { border-top: 0; }
+.pricelist .li span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pricelist .li small { display: block; color: var(--muted); font-size: 0.82rem; }
+.pricelist .li.off span:last-child { color: var(--muted); font-weight: 400; }
+.back { color: var(--accent); text-decoration: none; font-weight: 600; justify-self: start; }
 .confirm { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 0.85rem; }
 @media (prefers-reduced-motion: no-preference) {
   .svc, .day, .time, .btn { transition: background-color .15s, border-color .15s, transform .1s; }
@@ -192,8 +208,36 @@ button, input, select, textarea { font: inherit; color: inherit; }
 </head>
 <body>
 
-<!-- ======================= CLIENTE ======================= -->
-<main class="wrap" id="cliente">
+<!-- ======================= INÍCIO (cartão de visita) ======================= -->
+<main class="wrap" id="inicio">
+  <header class="hero">
+    <img src="icon-192.png" alt="" class="logo" width="72" height="72">
+    <h1 id="i-nome">Studio de Unhas</h1>
+    <p class="muted" id="i-frase"></p>
+    <div class="cta">
+      <a class="btn block big" href="#agendar">Agendar horário</a>
+      <a class="btn ghost block" id="i-wa" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+    </div>
+    <div class="contact" id="i-contato"></div>
+  </header>
+
+  <section class="step" aria-labelledby="i-s">
+    <h2 id="i-s">Serviços</h2>
+    <div class="pricelist" id="i-servicos"></div>
+  </section>
+
+  <section class="step" aria-labelledby="i-h">
+    <h2 id="i-h">Horário de atendimento</h2>
+    <div class="pricelist" id="i-horarios"></div>
+  </section>
+
+  <a class="btn block big" href="#agendar">Escolher meu horário</a>
+  <footer class="foot"><a href="#agenda">Área da profissional</a></footer>
+</main>
+
+<!-- ======================= CLIENTE (agendamento) ======================= -->
+<main class="wrap" id="cliente" hidden>
+  <a class="back" href="#">‹ Voltar</a>
   <header class="top">
     <div class="swatches" aria-hidden="true">
       <i style="background:#8E1438"></i><i style="background:#D9467A"></i><i style="background:#F2A7BC"></i><i style="background:#C9A98F"></i><i style="background:#3A1F2B"></i>
@@ -358,6 +402,43 @@ button, input, select, textarea { font: inherit; color: inherit; }
       a.href = "https://instagram.com/" + C.instagram.replace(/^@/, ""); a.target = "_blank"; a.rel = "noopener";
       meta.appendChild(a);
     }
+  }
+
+  function telBonito(s) {
+    var d = digits(s);
+    if (d.length === 11) return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+    if (d.length === 10) return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
+    return s;
+  }
+
+  function renderInicio() {
+    $("i-nome").textContent = C.nome || "Studio de Unhas";
+    $("i-frase").textContent = C.frase || "";
+    var wa = $("i-wa"), ct = $("i-contato"); ct.textContent = "";
+    if (C.whatsapp) {
+      wa.href = waLink(C.whatsapp, "Olá, Debora! Vim pelo site."); wa.hidden = false;
+      var t = el("a", "tel", telBonito(C.whatsapp)); t.href = "tel:+" + waNumber(C.whatsapp);
+      ct.appendChild(t);
+    } else { wa.hidden = true; }
+    if (C.endereco) ct.appendChild(el("span", "muted", C.endereco));
+    if (C.instagram) {
+      var ig = el("a", null, "@" + C.instagram.replace(/^@/, ""));
+      ig.href = "https://instagram.com/" + C.instagram.replace(/^@/, ""); ig.target = "_blank"; ig.rel = "noopener";
+      ct.appendChild(ig);
+    }
+    var sv = $("i-servicos"); sv.textContent = "";
+    C.servicos.forEach(function (s) {
+      var li = el("div", "li"), a = el("span", null, s.nome);
+      a.appendChild(el("small", null, dur(s.minutos)));
+      li.appendChild(a); li.appendChild(el("span", null, money(s.preco))); sv.appendChild(li);
+    });
+    var hb = $("i-horarios"); hb.textContent = "";
+    [1, 2, 3, 4, 5, 6, 0].forEach(function (d) {
+      var h = C.horarios[d], li = el("div", "li" + (h ? "" : " off"));
+      li.appendChild(el("span", null, WDL[d].charAt(0).toUpperCase() + WDL[d].slice(1)));
+      li.appendChild(el("span", null, h ? h.abre + " às " + h.fecha : "Fechado"));
+      hb.appendChild(li);
+    });
   }
 
   function renderServicos() {
@@ -619,10 +700,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
   /* ---------------- Rotas ---------------- */
   function rota() {
-    var adm = location.hash === "#agenda";
-    $("cliente").hidden = adm; $("agenda").hidden = !adm;
+    var h = location.hash, adm = h === "#agenda", ag = h === "#agendar";
+    $("agenda").hidden = !adm; $("cliente").hidden = !ag; $("inicio").hidden = adm || ag;
     if (adm) { document.title = "Minha agenda · " + (C.nome || "Studio"); agenda = load(); renderAgenda(); }
-    else { document.title = (C.nome || "Studio") + " · Agendar"; renderCliente(); }
+    else if (ag) { document.title = (C.nome || "Studio") + " · Agendar"; renderCliente(); }
+    else { document.title = (C.nome || "Studio") + " · Nail Designer"; renderInicio(); }
     window.scrollTo(0, 0);
   }
 
