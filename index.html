@@ -30,7 +30,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
-<script src="config.js?v=20261120l"></script>
+<script>
+  // Sempre busca a configuração mais recente (o painel publica mudanças nela)
+  document.write('<script src="config.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');
+</script>
+<script>
+  // Prévia do painel: usa o rascunho que ainda não foi publicado
+  try { if (/[?&]preview=1/.test(location.search) && window.parent !== window && window.parent.DRAFT) window.CONFIG = JSON.parse(JSON.stringify(window.parent.DRAFT)); } catch (e) {}
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 /* Layout: coluna única tipo celular, no visual dos panfletos da Débora (creme, dourado, vinho na promoção). Tema único claro. */
