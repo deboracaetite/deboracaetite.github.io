@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rifa da Beleza · Débora Caetité</title>
+<meta name="description" content="Escolha seus números, pague com Pix e envie o comprovante para a Débora.">
+<meta name="theme-color" content="#F5E9DA">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="Rifa da Beleza · Débora Caetité">
+<meta property="og:description" content="R$ 5,00 cada número. Escolha os seus e boa sorte!">
+<meta property="og:image" content="https://deboracaetite.github.io/img/compartilhar.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
+<script src="config.js?v=20261120h"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* Layout: coluna única de celular. Mesma identidade do site (creme e dourado), com vinho e rosa da arte da rifa. Tema único claro. */
+:root {
+  --bg: #F5E9DA; --surface: #FFF8EF; --ink: #3A2A1F; --muted: #86705C; --line: #E3CDB2;
+  --gold: #A87A30; --gold-hi: #E7C57E; --gold-lo: #8A6122;
+  --gold-grad: linear-gradient(100deg, #8A6122 0%, #C99A4B 30%, #EED39A 50%, #C1913F 70%, #8A6122 100%);
+  --wine: #8B1426; --wine-2: #B0283A; --pink: #E0457B; --pink-soft: #FBE1EA;
+  --ok: #2E6B45; --ok-soft: #E2EFDF; --warn: #8B1426; --warn-soft: #F7E1DD; --on-dark: #FFF6E8;
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-script: "Great Vibes", "Brush Script MT", cursive;
+  --font-body: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  --r: 18px; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; color: var(--ink); font: 15px/1.55 var(--font-body);
+  background: var(--bg) radial-gradient(120% 60% at 50% 0%, #FBF3E8 0%, var(--bg) 60%, #EFDDC7 100%) fixed;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+[hidden] { display: none !important; }
+.wrap {
+  max-width: 560px; margin: 0 auto; padding-block: 18px 120px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 26px;
+}
+h1, h2 { margin: 0; line-height: 1.15; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; letter-spacing: .06em; color: var(--gold-lo); }
+p { margin: 0; }
+.muted { color: var(--muted); } .small { font-size: .85rem; }
+.label { font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+a { color: var(--gold-lo); }
+.back { text-decoration: none; font-weight: 600; justify-self: start; }
+
+.hero { display: grid; gap: 6px; justify-items: center; text-align: center; }
+.hero .t1 { font-family: var(--font-script); font-size: clamp(2.4rem, 11vw, 3.2rem); color: var(--gold-lo); line-height: 1; }
+.hero .t2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 12vw, 3.4rem); color: var(--wine); letter-spacing: .04em; line-height: 1; }
+.hero .by { font-family: var(--font-display); letter-spacing: .3em; font-size: .78rem; color: var(--ink); }
+.hero .call { font-weight: 600; color: var(--wine); }
+
+.prizes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.prize { display: grid; gap: 4px; align-content: start; text-align: center; padding: 12px 8px; border-radius: var(--r); background: var(--surface); border: 1.5px solid var(--gold-hi); min-width: 0; }
+.prize b { font-family: var(--font-display); font-size: .72rem; letter-spacing: .08em; color: var(--on-dark); background: var(--gold-grad); border-radius: 999px; padding: 3px 6px; justify-self: center; color: #2B1C0F; }
+.prize span { font-weight: 600; font-size: clamp(.72rem, 3.3vw, .85rem); line-height: 1.25; overflow-wrap: break-word; hyphens: auto; }
+.price { display: flex; justify-content: center; align-items: baseline; gap: 8px; }
+.price strong { font-family: var(--font-display); font-size: 2rem; color: var(--wine); }
+
+.grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; padding: 10px; border-radius: var(--r); background: var(--surface); border: 1.5px solid var(--gold-hi); }
+.n {
+  aspect-ratio: 1; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; cursor: pointer;
+  font-weight: 700; font-size: clamp(.62rem, 2.9vw, .85rem); font-variant-numeric: tabular-nums; padding: 0; display: grid; place-items: center;
+}
+.n.taken { background: var(--pink); border-color: var(--pink); color: transparent; cursor: not-allowed; }
+.n.pend { background: repeating-linear-gradient(45deg, var(--pink-soft) 0 4px, #f3b5c9 4px 8px); border-color: #f3b5c9; color: var(--wine); }
+.n.sel { background: var(--gold-grad); border-color: var(--gold); color: #2B1C0F; transform: scale(1.06); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font-size: .78rem; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; border: 1px solid var(--line); }
+.fresh { text-align: center; font-size: .75rem; color: var(--muted); }
+
+.panel { display: grid; gap: 12px; padding: 16px; border-radius: var(--r); background: var(--surface); border: 1.5px solid var(--line); }
+.step-head { display: flex; align-items: center; gap: 10px; }
+.step-n { font-family: var(--font-display); font-weight: 700; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-grad); color: #2B1C0F; flex: none; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: .9rem; }
+.field input, .field textarea { width: 100%; padding: 12px 14px; border-radius: 12px; background: #fff; border: 1.5px solid var(--line); }
+.field textarea { min-height: 90px; resize: vertical; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 18px; border-radius: 999px; border: 0; cursor: pointer; text-decoration: none;
+  background: var(--gold-grad); color: #2B1C0F; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; font-size: .82rem;
+  box-shadow: 0 6px 18px -8px rgba(138, 97, 34, .55), inset 0 1px 0 rgba(255,255,255,.5);
+}
+.btn.ghost { background: var(--surface); color: var(--gold-lo); border: 1.5px solid var(--gold); box-shadow: none; }
+.btn.wine { background: linear-gradient(180deg, var(--wine-2), var(--wine)); color: var(--on-dark); }
+.btn.sm { padding: 8px 12px; font-size: .7rem; }
+.btn.block { width: 100%; }
+.btn[aria-disabled="true"], .btn:disabled { opacity: .45; cursor: not-allowed; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+.qr { justify-self: center; padding: 12px; background: #fff; border-radius: 14px; border: 1.5px solid var(--gold-hi); }
+.qr img, .qr canvas { display: block; width: 200px; height: 200px; }
+.code { font-family: ui-monospace, Consolas, monospace; font-size: .72rem; word-break: break-all; padding: 10px; border-radius: 10px; background: #fff; border: 1px dashed var(--line); max-height: 90px; overflow: auto; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .9rem; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.proof { display: grid; gap: 8px; justify-items: center; }
+.proof img { max-width: 160px; border-radius: 10px; border: 1px solid var(--line); }
+.drop { display: grid; place-items: center; gap: 4px; padding: 18px; border-radius: 14px; border: 2px dashed var(--gold-hi); background: #fff; cursor: pointer; text-align: center; }
+.note { font-size: .82rem; color: var(--muted); text-align: center; }
+.okbox { padding: 14px; border-radius: 14px; background: var(--ok-soft); color: var(--ok); text-align: center; font-weight: 600; }
+.alert { padding: 10px 12px; border-radius: 10px; background: var(--warn-soft); color: var(--warn); font-size: .9rem; }
+
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; display: flex; gap: 10px; align-items: center; justify-content: center;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(255, 248, 239, .96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-top: 1px solid var(--line);
+}
+.bar .sum { display: grid; line-height: 1.2; }
+.bar .sum b { font-family: var(--font-display); font-size: 1.15rem; color: var(--wine); }
+.bar .btn { flex: 0 1 220px; }
+
+/* Admin */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat { padding: 12px; border-radius: var(--r); background: var(--surface); border: 1.5px solid var(--line); text-align: center; display: grid; min-width: 0; }
+.stat b { font-family: var(--font-display); font-size: 1.25rem; color: var(--gold-lo); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sale { display: grid; gap: 6px; padding: 12px 14px; border-radius: 14px; background: #fff; border: 1.5px solid var(--line); }
+.sale .who { font-weight: 700; overflow-wrap: anywhere; }
+.sale .nums { font-variant-numeric: tabular-nums; color: var(--wine); font-weight: 600; overflow-wrap: anywhere; }
+.chip { display: inline-block; font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--pink-soft); color: var(--wine); justify-self: start; }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.list { display: grid; gap: 8px; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(86px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 999px; font-size: .9rem; z-index: 20; max-width: calc(100% - 32px); text-align: center; }
+.foot { text-align: center; font-size: .8rem; color: var(--muted); }
+.foot a { color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .n, .btn { transition: transform .12s, background-color .15s; } }
+</style>
+</head>
+<body>
+
+<!-- ===================== CLIENTE ===================== -->
+<main class="wrap" id="cliente">
+  <a class="back" href="./">‹ Site da Débora</a>
+  <header class="hero">
+    <span class="t1" id="r-t1">Rifa da</span>
+    <h1 class="t2" id="r-t2">Beleza</h1>
+    <span class="by">DÉBORA CAETITÉ · NAIL DESIGNER</span>
+    <p class="call" id="r-call"></p>
+  </header>
+
+  <section class="prizes" id="r-premios" aria-label="Prêmios"></section>
+  <div class="price"><span class="label">Cada número</span><strong id="r-preco"></strong></div>
+  <p class="note" id="r-sorteio" hidden></p>
+
+  <section style="display:grid;gap:10px" aria-labelledby="s1">
+    <div class="step-head"><span class="step-n">1</span><h2 id="s1">Escolha seus números</h2></div>
+    <div class="grid" id="r-grid"></div>
+    <div class="legend"><span><i style="background:#fff"></i>Livre</span><span><i style="background:#D9A84A"></i>Escolhido</span><span><i style="background:#E0457B"></i>Vendido</span><span><i style="background:#f3b5c9"></i>Aguardando confirmação</span></div>
+    <p class="fresh" id="r-fresh"></p>
+  </section>
+
+  <section class="panel" id="p-dados" hidden aria-labelledby="s2">
+    <div class="step-head"><span class="step-n">2</span><h2 id="s2">Seus dados</h2></div>
+    <div class="field"><label for="c-nome">Nome completo</label><input id="c-nome" autocomplete="name" placeholder="Ex.: Ana Souza"></div>
+    <div class="field"><label for="c-tel">Seu WhatsApp</label><input id="c-tel" inputmode="tel" autocomplete="tel" placeholder="11 98765-4321"></div>
+  </section>
+
+  <section class="panel" id="p-pix" hidden aria-labelledby="s3">
+    <div class="step-head"><span class="step-n">3</span><h2 id="s3">Pague com Pix</h2></div>
+    <p class="small">Abra o app do seu banco, escolha <b>Pix › Ler QR Code</b> ou <b>Pix Copia e Cola</b>. O valor já vem certo.</p>
+    <div class="qr" id="qr"></div>
+    <div class="code" id="pix-code"></div>
+    <button class="btn block" id="b-copiar-pix" type="button">Copiar Pix Copia e Cola</button>
+    <dl class="kv">
+      <dt>Valor</dt><dd id="pix-valor"></dd>
+      <dt>Recebedora</dt><dd id="pix-nome"></dd>
+      <dt>Chave (celular)</dt><dd id="pix-chave"></dd>
+    </dl>
+  </section>
+
+  <section class="panel" id="p-comp" hidden aria-labelledby="s4">
+    <div class="step-head"><span class="step-n">4</span><h2 id="s4">Envie o comprovante</h2></div>
+    <label class="drop" for="c-arq" id="drop">
+      <b>Anexar comprovante</b>
+      <span class="small muted">Print ou PDF do Pix</span>
+    </label>
+    <input type="file" id="c-arq" accept="image/*,application/pdf" hidden>
+    <div class="proof" id="proof" hidden></div>
+    <button class="btn wine block" id="b-enviar" type="button">Enviar para a Débora no WhatsApp</button>
+    <p class="note" id="envio-dica">Vai abrir o WhatsApp com seus números. Se o comprovante não for junto, é só anexar na conversa.</p>
+    <div class="okbox" id="ok" hidden>Pronto! Seus números ficam garantidos assim que a Débora confirmar o Pix. Boa sorte!</div>
+  </section>
+
+  <footer class="foot"><a href="#admin">Área da Débora</a></footer>
+</main>
+
+<nav class="bar" id="bar" hidden aria-label="Resumo">
+  <div class="sum"><span class="small muted" id="bar-qtd"></span><b id="bar-total"></b></div>
+  <button class="btn" id="b-continuar" type="button">Continuar</button>
+</nav>
+
+<!-- ===================== ADMIN (Débora) ===================== -->
+<main class="wrap" id="admin" hidden>
+  <a class="back" href="#">‹ Ver página da rifa</a>
+  <header class="hero">
+    <span class="label">Área da Débora</span>
+    <h1 class="t2" style="font-size:2rem" id="a-titulo">Rifa</h1>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><span class="label">Pagos</span><b id="st-pagos">0</b></div>
+    <div class="stat"><span class="label">Pendentes</span><b id="st-pend">0</b></div>
+    <div class="stat"><span class="label">Recebido</span><b id="st-valor">R$ 0</b></div>
+  </div>
+
+  <section class="panel" aria-labelledby="a1">
+    <h2 id="a1">Registrar pedido do WhatsApp</h2>
+    <div class="field"><label for="a-colar">Cole a mensagem que a cliente mandou</label>
+      <textarea id="a-colar" placeholder="🎟️ RIFA DA BELEZA&#10;Números: 07, 23&#10;Nome: ...&#10;WhatsApp: ..."></textarea></div>
+    <div id="a-prev" hidden></div>
+    <div class="alert" id="a-aviso" hidden></div>
+    <div class="row">
+      <button class="btn" id="a-pago" type="button">Registrar como pago</button>
+      <button class="btn ghost" id="a-pend" type="button">Registrar pendente</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="a2">
+    <h2 id="a2">Aguardando conferir o Pix</h2>
+    <div class="list" id="a-pendentes"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="a3">
+    <h2 id="a3">Venda manual</h2>
+    <p class="small muted">Para números vendidos fora do site (pessoalmente, papel). Toque nos números e escreva o nome.</p>
+    <div class="grid" id="a-grid"></div>
+    <div class="field"><label for="m-nome">Nome</label><input id="m-nome" placeholder="Nome da compradora"></div>
+    <div class="field"><label for="m-tel">WhatsApp (opcional)</label><input id="m-tel" inputmode="tel"></div>
+    <button class="btn" id="m-salvar" type="button">Marcar como vendidos</button>
+  </section>
+
+  <section class="panel" aria-labelledby="a4">
+    <h2 id="a4">Lista para o sorteio</h2>
+    <p class="small muted">Só entram os números <b>pagos</b>. Cole a lista no app de sorteio (ex.: Sorteador, Sorteio Online) ou sorteie um número de 1 a <span id="a-total">100</span> e procure o nome aqui.</p>
+    <div class="row">
+      <button class="btn" id="l-copiar" type="button">Copiar "número – nome"</button>
+      <button class="btn ghost" id="l-nomes" type="button">Copiar só nomes</button>
+      <a class="btn ghost" id="l-wa" href="#" target="_blank" rel="noopener">Enviar lista no WhatsApp</a>
+      <button class="btn ghost" id="l-csv" type="button">Baixar planilha</button>
+    </div>
+    <div class="list" id="a-vendas"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="a5">
+    <h2 id="a5">Atualizar números no link</h2>
+    <p class="small muted">Como o site não tem servidor, os números vendidos vão dentro do link. Depois de confirmar vendas, mande o <b>link atualizado</b> no status e nos grupos.</p>
+    <div class="code" id="a-link"></div>
+    <div class="row">
+      <button class="btn" id="k-copiar" type="button">Copiar link atualizado</button>
+      <a class="btn ghost" id="k-wa" href="#" target="_blank" rel="noopener">Compartilhar no WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="a6">
+    <h2 id="a6">Cópia de segurança</h2>
+    <p class="small muted">As vendas ficam guardadas neste celular. Baixe uma cópia de vez em quando.</p>
+    <div class="row">
+      <button class="btn ghost sm" id="bk-baixar" type="button">Baixar cópia</button>
+      <label class="btn ghost sm" for="bk-arq">Carregar cópia</label>
+      <input type="file" id="bk-arq" accept=".json,application/json" hidden>
+      <button class="btn ghost sm" id="bk-zerar" type="button">Começar rifa nova</button>
+    </div>
+    <div id="zerar-conf" hidden class="alert">Isso apaga todas as vendas desta rifa neste celular. Baixe uma cópia antes.
+      <div class="row" style="margin-top:8px"><button class="btn wine sm" id="z-sim" type="button">Apagar tudo</button><button class="btn ghost sm" id="z-nao" type="button">Cancelar</button></div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  "use strict";
+  var C = window.CONFIG || {}, R = C.rifa || {};
+  var TOTAL = R.numeros || 100, PRECO = R.preco || 5;
+  var KEY = "rifa-" + (R.id || "atual");
+  var PRIMEIRO = (C.nome || "Débora").split(" ")[0];
+
+  function $(id) { return document.getElementById(id); }
+  function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+  function pad(n) { return String(n).padStart(TOTAL >= 100 ? 2 : 2, "0"); }
+  function money(v) { return "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function digits(s) { return String(s || "").replace(/\D/g, ""); }
+  function waNum(s) { var d = digits(s); return d.length <= 11 ? "55" + d : d; }
+  function waLink(num, txt) { return "https://wa.me/" + (num ? waNum(num) : "") + "?text=" + encodeURIComponent(txt); }
+  var toastT;
+  function toast(m) { var t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { t.hidden = true; }, 2800); }
+  function copiar(txt, ok) {
+    function fb() { var ta = el("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); toast(ok); } catch (e) { toast("Não consegui copiar. Segure o texto e copie."); } ta.remove(); }
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { toast(ok); }, fb); else fb();
+  }
+  function listaNums(arr) { return arr.slice().sort(function (a, b) { return a - b; }).map(pad).join(", "); }
+
+  /* ---------- Números ocupados dentro do link (?r=código&t=data) ---------- */
+  function encode(set) {
+    var n = 0n; set.forEach(function (k) { n |= 1n << BigInt(k - 1); });
+    return n.toString(36);
+  }
+  function decode(code) {
+    var out = new Set(); if (!code) return out;
+    try {
+      var n = 0n; for (var i = 0; i < code.length; i++) n = n * 36n + BigInt(parseInt(code[i], 36));
+      for (var k = 1; k <= TOTAL; k++) if ((n >> BigInt(k - 1)) & 1n) out.add(k);
+    } catch (e) {}
+    return out;
+  }
+  var qs = new URLSearchParams(location.search);
+  var OCUP = decode(qs.get("r")), PEND = decode(qs.get("p"));
+  var ATUAL = qs.get("t");
+
+  /* ---------- PIX (BR Code estático com valor) ---------- */
+  function tlv(id, v) { return id + String(v.length).padStart(2, "0") + v; }
+  function crc16(s) { var c = 0xFFFF; for (var i = 0; i < s.length; i++) { c ^= s.charCodeAt(i) << 8; for (var j = 0; j < 8; j++) { c = (c & 0x8000) ? ((c << 1) ^ 0x1021) : (c << 1); c &= 0xFFFF; } } return c.toString(16).toUpperCase().padStart(4, "0"); }
+  function semAcento(s, max) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9 ]/g, "").toUpperCase().slice(0, max); }
+  function pixPayload(valor) {
+    var p = tlv("00", "01") + tlv("26", tlv("00", "br.gov.bcb.pix") + tlv("01", R.pixChave)) +
+      tlv("52", "0000") + tlv("53", "986") + tlv("54", valor.toFixed(2)) + tlv("58", "BR") +
+      tlv("59", semAcento(R.pixNome, 25)) + tlv("60", semAcento(R.pixCidade, 15)) + tlv("62", tlv("05", "RIFA")) + "6304";
+    return p + crc16(p);
+  }
+
+  /* ================= CLIENTE ================= */
+  var escolhidos = new Set(), arquivo = null;
+
+  function renderTopo() {
+    var tit = R.titulo || "Rifa";
+    var partes = tit.match(/^(.*\bda|.*\bdo|.*\bde)\s+(.+)$/i);
+    $("r-t1").textContent = partes ? partes[1] : ""; $("r-t2").textContent = partes ? partes[2] : tit;
+    $("r-call").textContent = R.chamada || "";
+    $("r-preco").textContent = money(PRECO);
+    var pr = $("r-premios"); pr.textContent = "";
+    (R.premios || []).forEach(function (p, i) { var d = el("div", "prize"); d.appendChild(el("b", null, (i + 1) + "º PRÊMIO")); d.appendChild(el("span", null, p)); pr.appendChild(d); });
+    if (R.sorteio) { $("r-sorteio").textContent = "Sorteio: " + R.sorteio; $("r-sorteio").hidden = false; }
+    $("r-fresh").textContent = ATUAL ? "Números vendidos atualizados em " + ATUAL.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)$/, "$3/$2 às $4:$5") + "." : "";
+  }
+
+  function renderGrid() {
+    var g = $("r-grid"); g.textContent = "";
+    for (var k = 1; k <= TOTAL; k++) {
+      var b = el("button", "n", pad(k)); b.type = "button";
+      if (OCUP.has(k)) { b.className = "n taken"; b.disabled = true; b.setAttribute("aria-label", "Número " + pad(k) + " vendido"); }
+      else if (PEND.has(k)) { b.className = "n pend"; b.disabled = true; b.setAttribute("aria-label", "Número " + pad(k) + " aguardando confirmação"); }
+      else {
+        if (escolhidos.has(k)) b.className = "n sel";
+        b.setAttribute("aria-pressed", escolhidos.has(k) ? "true" : "false");
+        (function (n) { b.onclick = function () { escolhidos.has(n) ? escolhidos.delete(n) : escolhidos.add(n); renderGrid(); renderPassos(); }; })(k);
+      }
+      g.appendChild(b);
+    }
+  }
+
+  function mensagem() {
+    return "🎟️ " + (R.titulo || "RIFA").toUpperCase() + "\n" +
+      "Números: " + listaNums(Array.from(escolhidos)) + "\n" +
+      "Nome: " + $("c-nome").value.trim() + "\n" +
+      "WhatsApp: " + $("c-tel").value.trim() + "\n" +
+      "Total: " + money(escolhidos.size * PRECO) + "\n" +
+      "Comprovante do Pix em anexo.";
+  }
+
+  var qrObj = null, ultimoValor = null;
+  function renderPix() {
+    var v = escolhidos.size * PRECO;
+    if (v === ultimoValor) return; ultimoValor = v;
+    var code = pixPayload(v);
+    $("pix-code").textContent = code;
+    $("pix-valor").textContent = money(v);
+    $("pix-nome").textContent = R.pixNome || "";
+    $("pix-chave").textContent = R.pixChave || "";
+    var q = $("qr"); q.textContent = "";
+    if (window.QRCode) { qrObj = new QRCode(q, { text: code, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M }); }
+    else q.appendChild(el("span", "small muted", "Use o Pix Copia e Cola abaixo."));
+  }
+
+  function renderPassos() {
+    var n = escolhidos.size;
+    $("bar").hidden = n === 0 || !$("p-comp").hidden && dadosOk();
+    $("bar-qtd").textContent = n + (n === 1 ? " número" : " números") + (n ? ": " + listaNums(Array.from(escolhidos)) : "");
+    $("bar-total").textContent = money(n * PRECO);
+    if (n === 0) { $("p-dados").hidden = $("p-pix").hidden = $("p-comp").hidden = true; }
+    if (!$("p-pix").hidden) { ultimoValor = null; renderPix(); }
+  }
+  function dadosOk() { return $("c-nome").value.trim().length > 2 && digits($("c-tel").value).length >= 10; }
+
+  $("b-continuar").onclick = function () {
+    if (!escolhidos.size) return;
+    if ($("p-dados").hidden) { $("p-dados").hidden = false; rolar("p-dados"); $("c-nome").focus(); return; }
+    if (!dadosOk()) { toast("Preencha seu nome e WhatsApp com DDD."); rolar("p-dados"); return; }
+    $("p-pix").hidden = false; $("p-comp").hidden = false; ultimoValor = null; renderPix(); rolar("p-pix"); renderPassos();
+  };
+  ["c-nome", "c-tel"].forEach(function (id) { $(id).addEventListener("input", function () { try { localStorage.setItem("rifa-" + id, this.value); } catch (e) {} }); });
+  try { $("c-nome").value = localStorage.getItem("rifa-c-nome") || localStorage.getItem("cliente-nome") || ""; $("c-tel").value = localStorage.getItem("rifa-c-tel") || ""; } catch (e) {}
+
+  $("b-copiar-pix").onclick = function () { copiar($("pix-code").textContent, "Pix Copia e Cola copiado. Cole no app do banco."); };
+
+  $("c-arq").onchange = function () {
+    arquivo = this.files[0] || null;
+    var pv = $("proof"); pv.textContent = "";
+    if (!arquivo) { pv.hidden = true; return; }
+    if (/^image\//.test(arquivo.type)) { var im = el("img"); im.alt = "Comprovante"; im.src = URL.createObjectURL(arquivo); pv.appendChild(im); }
+    pv.appendChild(el("span", "small", "✓ " + arquivo.name));
+    pv.hidden = false; $("drop").querySelector("b").textContent = "Trocar comprovante";
+  };
+
+  $("b-enviar").onclick = function () {
+    if (!dadosOk()) { toast("Preencha seu nome e WhatsApp com DDD."); rolar("p-dados"); return; }
+    if (!arquivo) { toast("Anexe o comprovante do Pix primeiro."); return; }
+    var txt = mensagem();
+    var podeArquivo = navigator.canShare && navigator.canShare({ files: [arquivo] });
+    function fallback() {
+      window.location.href = waLink(C.whatsapp, txt);
+      $("envio-dica").textContent = "Abrimos o WhatsApp com seus números. Anexe o print do comprovante na conversa e envie.";
+      $("ok").hidden = false;
+    }
+    if (podeArquivo) {
+      navigator.share({ files: [arquivo], text: txt, title: R.titulo || "Rifa" })
+        .then(function () { $("ok").hidden = false; $("envio-dica").textContent = "Escolheu a Débora no WhatsApp? Se mandou para outra pessoa, toque de novo."; })
+        .catch(function (e) { if (e && e.name === "AbortError") return; fallback(); });
+    } else fallback();
+  };
+
+  function rolar(id) { setTimeout(function () { $(id).scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); }
+
+  /* ================= ADMIN ================= */
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || { vendas: [] }; } catch (e) { return { vendas: [] }; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); return true; } catch (e) { toast("Não consegui salvar. Saia da aba anônima."); return false; } }
+  var D = load(), manual = new Set(), lido = null;
+
+  function donos() { var m = {}; D.vendas.forEach(function (v) { v.numeros.forEach(function (n) { m[n] = v; }); }); return m; }
+  function pagos() { return D.vendas.filter(function (v) { return v.status === "pago"; }); }
+
+  function parse(t) {
+    var nm = /N[úu]meros?:\s*([\d,\s;e\-]+)/i.exec(t), no = /Nome:\s*(.+)/i.exec(t), te = /WhatsApp:\s*(.+)/i.exec(t);
+    if (!nm) return null;
+    var nums = (nm[1].match(/\d+/g) || []).map(Number).filter(function (n) { return n >= 1 && n <= TOTAL; });
+    nums = Array.from(new Set(nums));
+    return { numeros: nums, nome: no ? no[1].trim() : "", tel: te ? te[1].trim() : "" };
+  }
+
+  $("a-colar").addEventListener("input", function () {
+    lido = parse(this.value);
+    var pv = $("a-prev"), av = $("a-aviso"); pv.textContent = ""; av.hidden = true;
+    if (!lido || !lido.numeros.length) { pv.hidden = true; return; }
+    var s = el("div", "sale"); s.appendChild(el("span", "who", lido.nome || "Sem nome"));
+    s.appendChild(el("span", "nums", "Números: " + listaNums(lido.numeros)));
+    s.appendChild(el("span", "small muted", (lido.tel || "sem WhatsApp") + " · " + money(lido.numeros.length * PRECO)));
+    pv.appendChild(s); pv.hidden = false;
+    var dn = donos(), conf = lido.numeros.filter(function (n) { return dn[n]; });
+    if (conf.length) { av.textContent = "Atenção: " + listaNums(conf) + " já " + (conf.length > 1 ? "estão" : "está") + " com " + conf.map(function (n) { return dn[n].nome || "outra pessoa"; }).filter(function (x, i, a) { return a.indexOf(x) === i; }).join(", ") + ". Fale com a cliente para trocar."; av.hidden = false; }
+  });
+
+  function registrar(status) {
+    if (!lido || !lido.numeros.length) { toast("Cole a mensagem da cliente primeiro."); return; }
+    var dn = donos(), livres = lido.numeros.filter(function (n) { return !dn[n]; });
+    if (!livres.length) { toast("Esses números já estão registrados."); return; }
+    D.vendas.push({ id: Date.now().toString(36), nome: lido.nome, tel: lido.tel, numeros: livres, status: status, em: new Date().toISOString() });
+    if (!save()) return;
+    $("a-colar").value = ""; $("a-prev").hidden = true; $("a-aviso").hidden = true; lido = null;
+    renderAdmin(); toast(status === "pago" ? "Venda registrada como paga" : "Registrada. Confira o Pix e confirme.");
+  }
+  $("a-pago").onclick = function () { registrar("pago"); };
+  $("a-pend").onclick = function () { registrar("pendente"); };
+
+  function cardVenda(v, comAcoes) {
+    var s = el("div", "sale");
+    s.appendChild(el("span", "who", v.nome || "Sem nome"));
+    s.appendChild(el("span", "nums", listaNums(v.numeros)));
+    s.appendChild(el("span", "small muted", (v.tel || "sem WhatsApp") + " · " + money(v.numeros.length * PRECO)));
+    s.appendChild(el("span", v.status === "pago" ? "chip ok" : "chip", v.status === "pago" ? "Pago" : "Aguardando Pix"));
+    var row = el("div", "row");
+    if (v.status !== "pago") {
+      var ok = el("button", "btn sm", "Pix caiu: confirmar"); ok.type = "button";
+      ok.onclick = function () { v.status = "pago"; save(); renderAdmin(); toast("Confirmado"); };
+      row.appendChild(ok);
+    }
+    if (v.tel) {
+      var w = el("a", "btn ghost sm", v.status === "pago" ? "Avisar cliente" : "Chamar cliente");
+      w.href = waLink(v.tel, v.status === "pago" ? "Oi, " + (v.nome || "").split(" ")[0] + "! Seu Pix caiu e seus números da " + (R.titulo || "rifa") + " estão confirmados: " + listaNums(v.numeros) + ". Boa sorte! 🍀" : "Oi, " + (v.nome || "").split(" ")[0] + "! Sobre os números " + listaNums(v.numeros) + " da " + (R.titulo || "rifa") + ": ainda não encontrei seu Pix. Pode me mandar o comprovante?");
+      w.target = "_blank"; w.rel = "noopener"; row.appendChild(w);
+    }
+    if (comAcoes) {
+      var del = el("button", "btn ghost sm", "Cancelar venda"); del.type = "button";
+      del.onclick = function () {
+        if (del.dataset.c) { D.vendas = D.vendas.filter(function (x) { return x !== v; }); save(); renderAdmin(); toast("Venda cancelada. Números liberados."); }
+        else { del.dataset.c = "1"; del.textContent = "Toque de novo para cancelar"; }
+      };
+      row.appendChild(del);
+    }
+    s.appendChild(row); return s;
+  }
+
+  function linkPublico() {
+    var pg = new Set(), pe = new Set();
+    D.vendas.forEach(function (v) { v.numeros.forEach(function (n) { (v.status === "pago" ? pg : pe).add(n); }); });
+    var d = new Date(), t = d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0") + String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0");
+    var base = location.origin + location.pathname;
+    return base + "?r=" + encode(pg) + (pe.size ? "&p=" + encode(pe) : "") + "&t=" + t;
+  }
+
+  function linhasSorteio() {
+    var out = [];
+    pagos().forEach(function (v) { v.numeros.forEach(function (n) { out.push({ n: n, nome: v.nome || "Sem nome", tel: v.tel || "" }); }); });
+    return out.sort(function (a, b) { return a.n - b.n; });
+  }
+
+  function renderAdmin() {
+    $("a-titulo").textContent = R.titulo || "Rifa"; $("a-total").textContent = TOTAL;
+    var pg = 0, pe = 0; D.vendas.forEach(function (v) { if (v.status === "pago") pg += v.numeros.length; else pe += v.numeros.length; });
+    $("st-pagos").textContent = pg + "/" + TOTAL; $("st-pend").textContent = pe; $("st-valor").textContent = money(pg * PRECO);
+
+    var lp = $("a-pendentes"); lp.textContent = "";
+    var pend = D.vendas.filter(function (v) { return v.status !== "pago"; });
+    if (!pend.length) lp.appendChild(el("p", "small muted", "Nenhum pedido esperando. Quando chegar mensagem de cliente, cole no campo acima."));
+    pend.forEach(function (v) { lp.appendChild(cardVenda(v, true)); });
+
+    var lv = $("a-vendas"); lv.textContent = "";
+    var ps = pagos();
+    if (!ps.length) lv.appendChild(el("p", "small muted", "Ainda não há números pagos."));
+    ps.slice().sort(function (a, b) { return Math.min.apply(null, a.numeros) - Math.min.apply(null, b.numeros); }).forEach(function (v) { lv.appendChild(cardVenda(v, true)); });
+
+    var g = $("a-grid"); g.textContent = ""; var dn = donos();
+    for (var k = 1; k <= TOTAL; k++) {
+      var b = el("button", "n", pad(k)); b.type = "button";
+      if (dn[k]) { b.className = dn[k].status === "pago" ? "n taken" : "n pend"; b.style.color = dn[k].status === "pago" ? "#fff" : ""; b.title = dn[k].nome; (function (v) { b.onclick = function () { toast(listaNums(v.numeros) + ": " + (v.nome || "sem nome") + (v.status === "pago" ? " (pago)" : " (aguardando Pix)")); }; })(dn[k]); }
+      else { if (manual.has(k)) b.className = "n sel"; (function (n) { b.onclick = function () { manual.has(n) ? manual.delete(n) : manual.add(n); renderAdmin(); }; })(k); }
+      g.appendChild(b);
+    }
+    var link = linkPublico();
+    $("a-link").textContent = link;
+    $("k-wa").href = waLink("", "🎟️ " + (R.titulo || "Rifa") + " · " + money(PRECO) + " cada número. Veja os números livres e garanta o seu: " + link);
+    var txt = linhasSorteio().map(function (l) { return pad(l.n) + " - " + l.nome; }).join("\n");
+    $("l-wa").href = waLink(C.whatsapp, "🎟️ " + (R.titulo || "Rifa") + " · lista para o sorteio (" + linhasSorteio().length + " números pagos)\n\n" + txt);
+  }
+
+  $("m-salvar").onclick = function () {
+    var nome = $("m-nome").value.trim();
+    if (!manual.size) { toast("Toque nos números vendidos."); return; }
+    if (!nome) { toast("Escreva o nome da compradora."); return; }
+    D.vendas.push({ id: Date.now().toString(36), nome: nome, tel: $("m-tel").value.trim(), numeros: Array.from(manual), status: "pago", em: new Date().toISOString(), manual: true });
+    if (!save()) return;
+    manual.clear(); $("m-nome").value = ""; $("m-tel").value = ""; renderAdmin(); toast("Números marcados como vendidos");
+  };
+
+  $("l-copiar").onclick = function () {
+    var ls = linhasSorteio(); if (!ls.length) { toast("Ainda não há números pagos."); return; }
+    copiar(ls.map(function (l) { return pad(l.n) + " - " + l.nome; }).join("\n"), "Lista copiada (" + ls.length + " números)");
+  };
+  $("l-nomes").onclick = function () {
+    var ls = linhasSorteio(); if (!ls.length) { toast("Ainda não há números pagos."); return; }
+    copiar(ls.map(function (l) { return l.nome + " (" + pad(l.n) + ")"; }).join("\n"), "Nomes copiados: um por número comprado");
+  };
+  $("l-csv").onclick = function () {
+    var rows = [["numero", "nome", "whatsapp"]].concat(linhasSorteio().map(function (l) { return [pad(l.n), l.nome, l.tel]; }));
+    var csv = "﻿" + rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(";"); }).join("\n");
+    baixar(new Blob([csv], { type: "text/csv;charset=utf-8" }), (R.id || "rifa") + ".csv");
+  };
+  $("k-copiar").onclick = function () { copiar(linkPublico(), "Link atualizado copiado"); };
+
+  function baixar(blob, nome) {
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nome;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+  $("bk-baixar").onclick = function () { baixar(new Blob([JSON.stringify({ rifa: R.id, salvoEm: new Date().toISOString(), dados: D }, null, 2)], { type: "application/json" }), (R.id || "rifa") + "-copia.json"); };
+  $("bk-arq").onchange = function () {
+    var f = this.files[0]; if (!f) return; var rd = new FileReader();
+    rd.onload = function () {
+      try { var j = JSON.parse(rd.result), d = j.dados || j; if (!Array.isArray(d.vendas)) throw 0;
+        var ids = {}; D.vendas.forEach(function (v) { ids[v.id] = 1; });
+        var novas = d.vendas.filter(function (v) { return v && v.id && !ids[v.id]; }); D.vendas = D.vendas.concat(novas); save(); renderAdmin(); toast(novas.length + " venda(s) carregada(s)");
+      } catch (e) { toast("Esse arquivo não é uma cópia da rifa."); }
+    };
+    rd.readAsText(f); this.value = "";
+  };
+  $("bk-zerar").onclick = function () { $("zerar-conf").hidden = false; };
+  $("z-nao").onclick = function () { $("zerar-conf").hidden = true; };
+  $("z-sim").onclick = function () { D = { vendas: [] }; save(); $("zerar-conf").hidden = true; renderAdmin(); toast("Rifa zerada neste celular"); };
+
+  /* ---------- Rotas ---------- */
+  function rota() {
+    var adm = location.hash === "#admin";
+    $("admin").hidden = !adm; $("cliente").hidden = adm; $("bar").hidden = true;
+    if (adm) { D = load(); renderAdmin(); document.title = "Área da Débora · " + (R.titulo || "Rifa"); }
+    else { renderTopo(); renderGrid(); renderPassos(); document.title = (R.titulo || "Rifa") + " · " + (C.nome || ""); }
+    window.scrollTo(0, 0);
+  }
+  if (!R.ativa) { document.body.innerHTML = '<main class="wrap"><p>Nenhuma rifa aberta no momento.</p><a href="./">Voltar ao site</a></main>'; return; }
+  window.addEventListener("hashchange", rota);
+  rota();
+})();
+</script>
+</body>
+</html>

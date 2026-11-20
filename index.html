@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
-<script src="config.js?v=20261120g"></script>
+<script src="config.js?v=20261120h"></script>
 <style>
 /* Layout: coluna única tipo celular, no visual dos panfletos da Débora (creme, dourado, vinho na promoção). Tema único claro. */
 :root {
@@ -207,6 +207,11 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 .lb .x { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold-hi); background: transparent; color: var(--on-dark); font-size: 1.4rem; cursor: pointer; }
 .lb .nav { display: flex; gap: 10px; }
 
+.rifa-card { display: grid; gap: 4px; justify-items: center; text-align: center; text-decoration: none; color: var(--ink); padding: 20px 16px; border-radius: 26px; background: linear-gradient(160deg, #FDE7EF, var(--surface) 60%); border: 1.5px solid var(--gold-hi); }
+.rifa-card .script { font-size: 2rem; }
+.rifa-card b { font-family: var(--font-display); font-size: 2.2rem; color: var(--wine); line-height: 1; letter-spacing: .04em; }
+.rifa-card #i-rifa-txt { font-size: .9rem; margin-bottom: 8px; }
+
 /* Agendamento */
 .top { display: grid; gap: 4px; justify-items: center; text-align: center; }
 .top .mini-logo { width: 150px; height: auto; }
@@ -307,6 +312,13 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
   </section>
 
   <section class="promo" id="i-promo" hidden></section>
+
+  <a class="rifa-card" id="i-rifa" href="rifa.html" hidden>
+    <span class="script">Rifa da</span>
+    <b>BELEZA</b>
+    <span id="i-rifa-txt"></span>
+    <span class="btn wine">Escolher meus números</span>
+  </a>
 
   <section class="step" aria-labelledby="i-como">
     <div class="rule"><h2 id="i-como">COMO AGENDAR</h2></div>
@@ -578,6 +590,11 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
       p.hidden = false;
     } else p.hidden = true;
 
+    var rf = C.rifa, rc = $("i-rifa");
+    if (rf && rf.ativa) {
+      $("i-rifa-txt").textContent = "Concorra a " + (rf.premios || []).join(", ").replace(/, ([^,]*)$/, " e $1").toLowerCase() + ". Apenas " + money(rf.preco) + " cada número.";
+      rc.hidden = false;
+    } else rc.hidden = true;
     var sv = $("i-servicos"); sv.textContent = "";
     C.servicos.forEach(function (s, i) {
       var li = el("a", "svc-li"); li.href = "#agendar"; li.appendChild(el("span", "star", "✦"));

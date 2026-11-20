@@ -45,6 +45,27 @@ window.CONFIG = {
     ate: "2026-11-30"
   },
 
+  // RIFA. Para desligar: ativa: false
+  // Para uma rifa nova: troque o "id" (ex.: "rifa-2026-12") e os prêmios.
+  rifa: {
+    ativa: true,
+    id: "rifa-da-beleza-1",
+    titulo: "Rifa da Beleza",
+    chamada: "Cuide das suas unhas e concorra a prêmios incríveis!",
+    preco: 5,
+    numeros: 100,
+    sorteio: "",            // data/forma do sorteio, ex.: "20/12 pelo app Sorteador". Vazio = não mostra.
+    premios: [
+      "Alongamento em gel",
+      "1 conjunto ou vestido",
+      "Banho de gel com esmaltação"
+    ],
+    // Pix que recebe o pagamento
+    pixChave: "+5511934854873",   // chave celular: +55 + DDD + número
+    pixNome: "Debora Gomes Caetite",
+    pixCidade: "Ribeirao Pires"
+  },
+
   // De quanto em quanto tempo aparecem os horários (minutos)
   intervalo: 30,
 
