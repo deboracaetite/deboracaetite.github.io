@@ -23,6 +23,17 @@ window.CONFIG = {
   // Instagram sem o @
   instagram: "deboracaetite.nails",
 
+  // Seção "Sobre" na página inicial
+  sobre: {
+    foto: "img/debora.jpg",
+    titulo: "Prazer, sou a Débora",
+    texto: [
+      "Sou nail designer em Ribeirão Pires e acredito que cuidar das unhas é cuidar de si. Por isso, cada atendimento é um momento só seu: sem pressa, com atenção a cada detalhe.",
+      "Trabalho com alongamento em gel, banho de gel e esmaltação em gel, sempre com materiais de qualidade e todo o cuidado com a higiene.",
+      "Meu objetivo é que você saia daqui com unhas lindas, duradouras e com a autoestima lá em cima."
+    ]
+  },
+
   // Portfólio: fotos da pasta img/ com uma legenda curta.
   // Para adicionar: suba a foto na pasta img/ e copie uma linha.
   fotos: [

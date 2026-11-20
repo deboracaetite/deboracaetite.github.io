@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
-<script src="config.js?v=20261120i"></script>
+<script src="config.js?v=20261120j"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 /* Layout: coluna única tipo celular, no visual dos panfletos da Débora (creme, dourado, vinho na promoção). Tema único claro. */
@@ -214,6 +214,12 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
 .rifa-card .script { font-size: 2rem; }
 .rifa-card b { font-family: var(--font-display); font-size: 2.2rem; color: var(--wine); line-height: 1; letter-spacing: .04em; }
 .rifa-card #i-rifa-txt { font-size: .9rem; margin-bottom: 8px; }
+
+.about { display: grid; gap: 10px; justify-items: center; text-align: center; padding: 26px 18px 22px; border-radius: 26px; background: var(--surface); border: 1.5px solid var(--gold-hi); }
+.about img { width: 116px; height: 116px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold-hi); box-shadow: 0 0 0 6px var(--surface), 0 0 0 7px var(--gold-hi), 0 12px 24px -14px rgba(58,42,31,.6); }
+.about h2.script { font-family: var(--font-script); font-size: 2.3rem; letter-spacing: 0; color: var(--gold-lo); font-weight: 400; margin-top: 6px; }
+.about-txt { display: grid; gap: 10px; max-width: 34ch; font-size: .95rem; line-height: 1.6; }
+.sign { font-family: var(--font-display); letter-spacing: .25em; font-size: .75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
 
 /* ===== Rifa ===== */
 .rf .wrap {
@@ -399,6 +405,14 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
     <div class="rule"><h2 id="i-p">PORTFÓLIO</h2></div>
     <div class="portfolio" id="i-fotos"></div>
     <p class="swipe">Deslize para ver mais ›</p>
+  </section>
+
+  <section class="about" id="i-sobre" hidden>
+    <img id="i-sobre-foto" alt="" width="300" height="300">
+    <h2 class="script" id="i-sobre-t"></h2>
+    <div class="about-txt" id="i-sobre-txt"></div>
+    <p class="sign">Débora Caetité</p>
+    <a class="btn ghost" href="#agendar">Agendar com a Débora</a>
   </section>
 
   <section class="promo" id="i-promo" hidden></section>
@@ -821,6 +835,14 @@ a.svc-li { color: inherit; text-decoration: none; cursor: pointer; }
       p.hidden = false;
     } else p.hidden = true;
 
+    var sb = C.sobre, sec = $("i-sobre");
+    if (sb && sb.texto) {
+      $("i-sobre-foto").src = sb.foto || ""; $("i-sobre-foto").alt = "Foto de " + (C.nome || ""); $("i-sobre-foto").hidden = !sb.foto;
+      $("i-sobre-t").textContent = sb.titulo || "";
+      var tx = $("i-sobre-txt"); tx.textContent = "";
+      sb.texto.forEach(function (t) { tx.appendChild(el("p", null, t)); });
+      sec.hidden = false;
+    } else sec.hidden = true;
     var rf = C.rifa, rc = $("i-rifa");
     if (rf && rf.ativa) {
       $("i-rifa-txt").textContent = "Concorra a " + (rf.premios || []).join(", ").replace(/, ([^,]*)$/, " e $1").toLowerCase() + ". Apenas " + money(rf.preco) + " cada número.";
