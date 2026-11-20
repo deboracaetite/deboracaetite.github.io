@@ -69,12 +69,12 @@ window.CONFIG = {
 
   // Serviços: nome, preço em reais (null = "sob consulta"),
   // duração em minutos e se está na promoção.
-  // ATENÇÃO: as durações são estimativas, confirme com a Débora.
   servicos: [
-    { nome: "Alongamento em gel", preco: 120, minutos: 150, promo: true },
-    { nome: "Banho de gel + esmaltação", preco: 75, minutos: 90, promo: true },
-    { nome: "Pacote duas esmaltações em gel (mão)", preco: 80, minutos: 60, promo: true, obs: "Valor das duas sessões" },
-    { nome: "Esmaltação em gel (mão)", preco: 45, minutos: 60, promo: true },
+    { nome: "Alongamento em gel", preco: 120, minutos: 180, promo: true },
+    { nome: "Manutenção do alongamento", preco: 90, minutos: 150 },
+    { nome: "Banho de gel + esmaltação", preco: 75, minutos: 150, promo: true },
+    { nome: "Pacote duas esmaltações em gel (mão)", preco: 80, minutos: 90, promo: true, obs: "Valor das duas sessões" },
+    { nome: "Esmaltação em gel (mão)", preco: 45, minutos: 90, promo: true },
     { nome: "Blindagem", preco: null, minutos: 60 }
   ]
 };
