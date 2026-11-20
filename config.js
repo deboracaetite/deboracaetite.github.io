@@ -7,10 +7,10 @@
 
 window.CONFIG = {
   // Nome que aparece no topo do site
-  nome: "Studio de Unhas",
+  nome: "Debora Caetite",
 
   // Frase curta abaixo do nome
-  frase: "Manicure e pedicure com hora marcada",
+  frase: "Nail Designer · manicure e pedicure com hora marcada",
 
   // WhatsApp que recebe os pedidos: DDD + número, só dígitos.
   // Exemplo: "11987654321"
