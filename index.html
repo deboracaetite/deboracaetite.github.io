@@ -417,6 +417,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     var wa = $("i-wa"), ct = $("i-contato"); ct.textContent = "";
     if (C.whatsapp) {
       wa.href = waLink(C.whatsapp, "Olá, Debora! Vim pelo site."); wa.hidden = false;
+      ct.appendChild(el("span", "label", "Contato"));
       var t = el("a", "tel", telBonito(C.whatsapp)); t.href = "tel:+" + waNumber(C.whatsapp);
       ct.appendChild(t);
     } else { wa.hidden = true; }

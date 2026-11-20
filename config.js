@@ -14,7 +14,7 @@ window.CONFIG = {
 
   // WhatsApp que recebe os pedidos: DDD + número, só dígitos.
   // Exemplo: "11987654321"
-  whatsapp: "",
+  whatsapp: "11934854873",
 
   // Endereço ou bairro (pode deixar vazio "")
   endereco: "",
