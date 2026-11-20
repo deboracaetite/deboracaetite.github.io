@@ -1,15 +1,15 @@
 {
-  "name": "Minha agenda · Debora Nail",
+  "name": "Minha agenda · Débora Nail",
   "short_name": "Minha agenda",
-  "description": "Agenda de atendimentos da Debora.",
+  "description": "Agenda de atendimentos da Débora.",
   "lang": "pt-BR",
   "start_url": "./#agenda",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#FBF7F8",
-  "theme_color": "#8E1438",
+  "background_color": "#F5E9DA",
+  "theme_color": "#F5E9DA",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
